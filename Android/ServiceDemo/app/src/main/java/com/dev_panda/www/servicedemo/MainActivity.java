@@ -22,7 +22,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     Button stopServiceButton;
     Button bindServiceButton;
     Button unBindServiceButton;
-
+    Button readServiceButton;
+    EchoService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +33,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         this.echoService = new Intent(this, EchoService.class);
         this.startServiceButton = (Button)findViewById(R.id.startButton);
         this.stopServiceButton = (Button)findViewById(R.id.stopButton);
-        this.bindServiceButton = (Button)findViewById(R.id.bindService);
-        this.unBindServiceButton = (Button)findViewById(R.id.unBindService);
+        this.bindServiceButton = (Button)findViewById(R.id.bindServiceButton);
+        this.unBindServiceButton = (Button)findViewById(R.id.unBindServiceButton);
+        this.readServiceButton = (Button)findViewById(R.id.readServiceButton);
 
         this.stopServiceButton.setOnClickListener(this);
         this.startServiceButton.setOnClickListener(this);
         this.bindServiceButton.setOnClickListener(this);
         this.unBindServiceButton.setOnClickListener(this);
+        this.readServiceButton.setOnClickListener(this);
 
         this.startServiceButton.setEnabled(true);
         this.stopServiceButton.setEnabled(false);
@@ -87,17 +90,26 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                 break;
             }
-            case R.id.bindService:
+            case R.id.bindServiceButton:
             {
                 bindService(this.echoService, this, Context.BIND_AUTO_CREATE);
                 break;
             }
-            case R.id.unBindService:
+            case R.id.unBindServiceButton:
             {
                 unbindService(this);
+                this.service = null;
                break;
             }
+            case R.id.readServiceButton:
+            {
+                if (this.service  != null) {
 
+                   System.out.println("The number in service is" + this.service.getCurrentCount());
+                }
+
+                break;
+            }
         }
 
     }
@@ -105,11 +117,19 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
 
+        //成功绑定的时候触发
+        System.out.println("onServiceConnected");
+
+        EchoService.EchoServiceBinder binder = (EchoService.EchoServiceBinder)service;
+        this.service = binder.getEchoService();
     }
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
 
+        //当Service崩溃的时候触发
+
+        System.out.println("onServiceDisconnected");
 
     }
 }

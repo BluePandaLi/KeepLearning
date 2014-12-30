@@ -19,13 +19,22 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/bindService"
+        android:layout_below="@id/stopButton"
+        android:id="@+id/bindServiceButton"
         android:text="BindService"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/unBindService"
+        android:layout_below="@id/bindServiceButton"
+        android:id="@+id/unBindServiceButton"
         android:text="unBindService"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/unBindServiceButton"
+        android:id="@+id/readServiceButton"
+        android:text="GetServiceNumber"/>
 
 
 </RelativeLayout>
